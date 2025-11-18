@@ -1,7 +1,14 @@
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
+
+let skewSetter = gsap.quickTo(".skew", "skewX"), // fast
+  clamp = gsap.utils.clamp(-4, 4); // don't let the skew go beyond 20 degrees.
+
 ScrollSmoother.create({
-  smooth: 1,
+  smooth: 1.5,
+  speed: 1.5,
   effects: true,
+  onUpdate: (self) => skewSetter(clamp(self.getVelocity() / -50)),
+  onStop: () => skewSetter(0),
 });
 
 function tooltip() {
@@ -105,7 +112,7 @@ function sec_1_gsap__init() {
       scrub: 1,
       animation: tl,
       start: "top top",
-      end: "+=500%",
+      end: "+=700%",
     });
   }
 
@@ -114,14 +121,14 @@ function sec_1_gsap__init() {
     tlText
       .set(textBox[0], { opacity: 1 })
       .to(textBox[0], { opacity: 0, duration: 1, ease: "none" })
-      .to(textBox[1], { opacity: 1, duration: 1, ease: "none" }, "+=0.5")
+      .to(textBox[1], { opacity: 1, duration: 2, ease: "none" })
       .to(textBox[1], { opacity: 0, duration: 1, ease: "none" })
-      .to(textBox[2], { opacity: 1, duration: 1, ease: "none" }, "+=0.5");
+      .to(textBox[2], { opacity: 1, duration: 2, ease: "none" });
 
     let st = ScrollTrigger.create({
       trigger: sec_1_pin,
       start: "top top",
-      end: "+=400%",
+      end: "+=700%",
       animation: tlText,
       scrub: 1,
     });
