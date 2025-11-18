@@ -465,15 +465,6 @@ header.invert {
       height: 100%;
     }
   }
-  /* .img-box:nth-child(6):hover {
-    top: 0;
-    right: 0;
-    width: 100vw;
-
-    img {
-      width: 100%;
-    }
-  } */
 }
 
 .sec-1 .text-box {
@@ -484,6 +475,7 @@ header.invert {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  opacity: 0;
   color: var(--White);
 
   h2 {
@@ -493,6 +485,7 @@ header.invert {
   p {
     margin-top: 2rem;
     font-size: var(--Subtitle-S);
+    line-height: 1.6;
   }
 }
 

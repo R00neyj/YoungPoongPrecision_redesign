@@ -1,4 +1,8 @@
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
+ScrollSmoother.create({
+  smooth: 1,
+  effects: true,
+});
 
 function tooltip() {
   const toolTipBox = document.querySelector(".tooltip-box");
@@ -68,12 +72,32 @@ function sec_1_gsap__init() {
   changeText();
 
   function horizontalScroll() {
+    const totalScrollDistance = imgContainerWrap.offsetWidth - window.innerWidth;
+    const imgBoxCenterOffset = lastImgBox.offsetLeft + lastImgBox.offsetWidth / 2 - window.innerWidth / 2;
+    const startProgress = imgBoxCenterOffset / totalScrollDistance;
+
+    console.log(startProgress);
+
     let tl = gsap.timeline();
     tl.to(imgContainerWrap, {
-      x: () => -(imgContainerWrap.offsetWidth - window.innerWidth),
+      x: () => -totalScrollDistance,
       ease: "none",
-      duration: 1,
-    });
+      duration: 2,
+    })
+      .to(lastImgBox, {
+        x: () => window.innerWidth / 2 - lastImgBox.offsetWidth / 2,
+      })
+      .to(
+        lastImgBox,
+        {
+          width: "100vw",
+          right: 0,
+          x: 0,
+          height: "100dvh",
+          duration: 1,
+        },
+        "+=0.5"
+      );
 
     let st = ScrollTrigger.create({
       trigger: sec_1_pin,
@@ -81,43 +105,25 @@ function sec_1_gsap__init() {
       scrub: 1,
       animation: tl,
       start: "top top",
-      end: "+=300%",
-    });
-
-    let tlImgBox = gsap.to(lastImgBox, { width: "100vw", height: "100dvh", position: "absolute", inset: "0 0 auto auto", duration: 1 });
-    let tlImg = gsap.to(lastImgBox.querySelector("img"), { width: "100%", duration: 1 });
-    let masterTlImg = gsap.timeline();
-    masterTlImg.add(tlImgBox, 0);
-    masterTlImg.add(tlImg, 0);
-    const lastImgX = lastImgBox.getBoundingClientRect().left - window.innerWidth;
-
-    let st2 = ScrollTrigger.create({
-      trigger: lastImgBox,
-      scrub: 1,
-      animation: masterTlImg,
-      start: `${lastImgX} bottom`,
-      end: "+=80%",
-      markers: true,
-      // pin: true,
-      onEnter: () => {
-        textBox[2].style.transition = "all .5s";
-        textBox[2].style.opacity = 0;
-      },
+      end: "+=500%",
     });
   }
 
   function changeText() {
     let tlText = gsap.timeline();
     tlText
-      .fromTo(textBox[1], { opacity: 1 }, { opacity: 0, duration: 1, ease: "none" })
-      .fromTo(textBox[2], { opacity: 0 }, { opacity: 1, duration: 1, ease: "none" });
+      .set(textBox[0], { opacity: 1 })
+      .to(textBox[0], { opacity: 0, duration: 1, ease: "none" })
+      .to(textBox[1], { opacity: 1, duration: 1, ease: "none" }, "+=0.5")
+      .to(textBox[1], { opacity: 0, duration: 1, ease: "none" })
+      .to(textBox[2], { opacity: 1, duration: 1, ease: "none" }, "+=0.5");
 
     let st = ScrollTrigger.create({
       trigger: sec_1_pin,
       start: "top top",
-      end: "+=250%",
+      end: "+=400%",
       animation: tlText,
-      scrub: true,
+      scrub: 1,
     });
   }
 }
