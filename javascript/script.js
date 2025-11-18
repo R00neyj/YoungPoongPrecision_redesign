@@ -90,21 +90,24 @@ function sec_1_gsap__init() {
       x: () => -totalScrollDistance,
       ease: "none",
       duration: 2,
-    })
-      .to(lastImgBox, {
-        x: () => window.innerWidth / 2 - lastImgBox.offsetWidth / 2,
-      })
-      .to(
-        lastImgBox,
-        {
-          width: "100vw",
-          right: 0,
-          x: 0,
-          height: "100dvh",
-          duration: 1,
-        },
-        "+=0.5"
-      );
+    });
+    tl.to(lastImgBox, {
+      x: () => window.innerWidth / 2 - lastImgBox.offsetWidth / 2,
+      ease: "none",
+    });
+    tl.to(".sec-1 .img-box:nth-child(6) img", { filter: "brightness(0.6)", ease: "none" });
+    tl.to(
+      lastImgBox,
+      {
+        width: "100vw",
+        right: 0,
+        x: 0,
+        height: "100dvh",
+        duration: 2,
+        ease: "none",
+      },
+      "+=0.5"
+    );
 
     let st = ScrollTrigger.create({
       trigger: sec_1_pin,
@@ -135,8 +138,44 @@ function sec_1_gsap__init() {
   }
 }
 
+function sec_2_gsap__init() {
+  const cards = document.querySelectorAll(".sec-2 .card");
+
+  cards.forEach((card, index) => {
+    const target = card.querySelector("a");
+    const prevTarget = index >= 1 ? cards[index - 1].querySelector("a") : null;
+
+    const h3 = target.querySelector(".text-box h3");
+    const p = target.querySelector(".text-box p");
+
+    console.log(prevTarget);
+
+    let tl = gsap.timeline();
+    tl.add("start");
+    tl.to(target, { width: "133rem", height: "100%", duration: 1, ease: "none" });
+    tl.to(prevTarget, { width: "80rem", height: "50%", duration: 1, ease: "none" }, "<10%");
+    tl.to(h3, { fontSize: "4.8rem", ease: "none" }, "start");
+    tl.to(p, { fontSize: "3.2rem", ease: "none" }, "start");
+
+    let st = ScrollTrigger.create({
+      trigger: card,
+      start: "top center",
+      end: "33% center",
+      animation: tl,
+      scrub: 1,
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   swiper__init();
   tooltip();
   sec_1_gsap__init();
+  sec_2_gsap__init();
+
+  document.querySelectorAll("a").forEach((el) => {
+    el.addEventListener("click", () => {
+      return false;
+    });
+  });
 });
