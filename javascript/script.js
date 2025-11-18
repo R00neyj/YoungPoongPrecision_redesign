@@ -148,8 +148,6 @@ function sec_2_gsap__init() {
     const h3 = target.querySelector(".text-box h3");
     const p = target.querySelector(".text-box p");
 
-    console.log(prevTarget);
-
     let tl = gsap.timeline();
     tl.add("start");
     tl.to(target, { width: "133rem", height: "100%", duration: 1, ease: "none" });
@@ -166,16 +164,52 @@ function sec_2_gsap__init() {
     });
   });
 }
+function sec_3_gsap__init() {
+  headerST();
+  bodyST();
+
+  function headerST() {
+    const header = document.querySelector("header");
+    const trigger = document.querySelector(".sec-3");
+    let st = ScrollTrigger.create({
+      trigger: trigger,
+      start: "top top",
+      end: "bottom top",
+      onEnter: () => header.classList.add("invert"),
+      onLeaveBack: () => header.classList.remove("invert"),
+    });
+  }
+
+  function bodyST() {
+    const pin = document.querySelector(".sec-3 .body");
+    const cards = document.querySelectorAll(".sec-3 .card");
+
+    const cardHeight = cards[0].offsetHeight;
+
+    let tl = gsap.timeline();
+
+    tl.add("start");
+    for (let i = 1; 3 >= i; i++) {
+      tl.pause(2);
+      tl.to(cards[i], { y: -cardHeight * i, duration: 1, ease: "none" });
+      tl.to(cards[i - 1], { scale: 0.95, filter: `blur(3px)`, ease: "none" }, "<50%");
+    }
+
+    let st = ScrollTrigger.create({
+      trigger: pin,
+      pin: true,
+      animation: tl,
+      scrub: 1,
+      start: "top top",
+      end: `+=${cardHeight * 4}`,
+    });
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   swiper__init();
   tooltip();
   sec_1_gsap__init();
   sec_2_gsap__init();
-
-  document.querySelectorAll("a").forEach((el) => {
-    el.addEventListener("click", () => {
-      return false;
-    });
-  });
+  sec_3_gsap__init();
 });
