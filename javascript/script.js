@@ -38,7 +38,7 @@ function tooltip() {
 }
 
 function swiper__init() {
-  new Swiper(".hero-swiper", {
+  let heroSection = new Swiper(".hero-swiper", {
     loop: true,
     parallax: true,
     speed: 800,
@@ -64,6 +64,20 @@ function swiper__init() {
         });
       },
     },
+  });
+
+  let sec4Swiper = new Swiper(".sec-4 .swiper", {
+    slidesPerView: 1.6,
+    spaceBetween: 30,
+  });
+
+  const sec5SwiperEl = document.querySelector(".sec-5 .swiper");
+  const length = sec5SwiperEl.querySelectorAll(".swiper-slide").length;
+  console.log(length);
+
+  let sec5Swiper = new Swiper(sec5SwiperEl, {
+    slidesPerView: length,
+    spaceBetween: 40,
   });
 }
 
@@ -222,11 +236,6 @@ function headerST() {
     });
   });
 }
-
-new Swiper(".sec-4 .swiper", {
-  slidesPerView: 1.6,
-  spaceBetween: 30,
-});
 
 document.addEventListener("DOMContentLoaded", () => {
   swiper__init();
