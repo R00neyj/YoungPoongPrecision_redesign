@@ -24,14 +24,21 @@ function tooltip() {
 
   hoverEl.forEach((el) => {
     let text;
+    let timer;
 
     el.addEventListener("mouseenter", (e) => {
       text = el.getAttribute("data-hover-text");
       toolTipText.textContent = text;
       console.log(text);
-      toolTipBox.classList.add("active");
+
+      timer = setTimeout(() => {
+        clearTimeout(timer);
+
+        toolTipBox.classList.add("active");
+      }, 400);
     });
     el.addEventListener("mouseleave", (e) => {
+      clearTimeout(timer);
       toolTipBox.classList.remove("active");
     });
   });
