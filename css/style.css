@@ -1137,6 +1137,7 @@ footer .right {
     .name {
       font-weight: var(--Body-Strong);
       font-size: var(--Body-M);
+      margin-bottom: 0.8rem;
     }
   }
 }
