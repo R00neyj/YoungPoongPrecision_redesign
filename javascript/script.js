@@ -1,4 +1,4 @@
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
+gsap.registerPlugin(ScrollSmoother, ScrollTrigger, DrawSVGPlugin, MotionPathPlugin);
 
 let skewSetter = gsap.quickTo(".skew", "skewX"), // fast
   clamp = gsap.utils.clamp(-4, 4); // don't let the skew go beyond 20 degrees.
@@ -29,7 +29,6 @@ function tooltip() {
     el.addEventListener("mouseenter", (e) => {
       text = el.getAttribute("data-hover-text");
       toolTipText.textContent = text;
-      console.log(text);
 
       timer = setTimeout(() => {
         clearTimeout(timer);
@@ -80,7 +79,6 @@ function swiper__init() {
 
   const sec5SwiperEl = document.querySelector(".sec-5 .swiper");
   const length = sec5SwiperEl.querySelectorAll(".swiper-slide").length;
-  console.log(length);
 
   let sec5Swiper = new Swiper(sec5SwiperEl, {
     slidesPerView: length,
@@ -112,11 +110,15 @@ function sec_1_gsap__init() {
       ease: "none",
       duration: 2,
     });
-    tl.to(lastImgBox, {
-      x: () => window.innerWidth / 2 - lastImgBox.offsetWidth / 2,
-      ease: "none",
-    });
-    tl.to(".sec-1 .img-box:nth-child(6) img", { filter: "brightness(0.6)", ease: "none" });
+    tl.to(
+      lastImgBox,
+      {
+        x: () => window.innerWidth / 2 - lastImgBox.offsetWidth / 2,
+        ease: "none",
+      },
+      "-=0.5"
+    );
+    tl.to(".sec-1 .img-box:nth-child(6) img", { filter: "brightness(0.6)", ease: "none" }, "<");
     tl.to(
       lastImgBox,
       {
@@ -129,7 +131,7 @@ function sec_1_gsap__init() {
       },
       "+=0.5"
     );
-    tl.to({}, { duration: 3 });
+    tl.to({}, { duration: 1 });
 
     let st = ScrollTrigger.create({
       trigger: sec_1_pin,
@@ -190,11 +192,14 @@ function sec_2_gsap__init() {
   });
 }
 function sec_3_gsap__init() {
+  const sec3 = document.querySelector(".sec-3");
+
+  headSVG();
   bodyST();
 
   function bodyST() {
-    const pin = document.querySelector(".sec-3 .body");
-    const cards = document.querySelectorAll(".sec-3 .card");
+    const pin = sec3.querySelector(".body");
+    const cards = sec3.querySelectorAll(".card");
 
     const cardHeight = cards[0].offsetHeight;
 
@@ -202,9 +207,8 @@ function sec_3_gsap__init() {
 
     tl.to({}, { duration: 0.5 });
     for (let i = 1; cards.length > i; i++) {
-      tl.pause(2);
-      tl.to(cards[i], { y: -cardHeight * i, duration: 1 * i, ease: "none" });
-      tl.to(cards[i - 1], { scale: 0.95, filter: `blur(3px)`, duration: 1, ease: "none" }, "<50%");
+      tl.to(cards[i], { y: -(cardHeight + 100) * i, duration: 1 * i, ease: "none" });
+      tl.to(cards[i - 1], { scale: 0.95, filter: `blur(3px)`, duration: 1, ease: "none" }, "<40%");
     }
     tl.to({}, { duration: 0.5 });
 
@@ -215,6 +219,42 @@ function sec_3_gsap__init() {
       scrub: 1,
       start: "top top",
       end: `+=${cardHeight * 5}`,
+    });
+  }
+
+  function headSVG() {
+    const head = sec3.querySelector(".head");
+    const path = sec3.querySelector("#sec-3-path");
+    const circle = sec3.querySelector("#sec-3-circle");
+
+    let duration = 3.3;
+    let ease = "power2.out";
+
+    let tl = gsap.timeline();
+    tl.set(circle, { opacity: 0 });
+    tl.from(path, { drawSVG: "0", ease: ease });
+    tl.to(
+      circle,
+      {
+        motionPath: {
+          path: path,
+          align: path,
+          alignOrigin: [0.5, 0.5],
+          start: 0,
+          end: 1,
+        },
+        opacity: 1,
+        ease: ease,
+      },
+      "<"
+    );
+
+    let st = ScrollTrigger.create({
+      trigger: head,
+      animation: tl,
+      scrub: duration,
+      start: "25% center",
+      end: "center center",
     });
   }
 }
