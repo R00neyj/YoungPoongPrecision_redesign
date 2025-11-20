@@ -139,24 +139,35 @@ body {
   font-family: "Inter", "Pretendard Variable", sans-serif;
   line-height: 1.5;
   overflow-x: hidden;
-  /* background-color: #09182b; */
 }
 
 /* ----------------------------- header ----------------------------- */
 header {
   --header-font-color: var(--White);
-  --header-bg-color: rgba(200, 200, 200, 0.1);
+  --header-bg-color: rgba(200, 200, 200, 0.15);
+  --header-lang-color: var(--header-bg-color);
 
   height: 9rem;
   width: 100%;
-  background-color: var(--header-bg-color);
-  backdrop-filter: blur(6px) saturate(0.8);
+  /* backdrop-filter: blur(6px) saturate(0.8); */
   color: var(--header-font-color);
-  border-bottom: 0.1px solid var(--header-bg-color);
+  /* background-color: var(--header-bg-color); */
+  border-bottom: 1px solid var(--header-bg-color);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 0;
+    z-index: -1;
+    background-color: var(--header-bg-color);
+    backdrop-filter: contrast(1.4) brightness(1.4) blur(6px);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0.2));
+    opacity: 1;
+  }
 }
 
 header > .inner {
@@ -242,7 +253,7 @@ header > .inner > .menu-box {
       transition: all 0.2s;
 
       &:hover {
-        background-color: var(--header-bg-color);
+        background-color: var(--header-lang-color);
         border-color: transparent;
       }
     }
@@ -252,7 +263,9 @@ header > .inner > .menu-box {
 /* header invert */
 header.invert {
   --header-font-color: var(--Black);
-  --header-bg-color: rgba(255, 255, 255, 0.4);
+  --header-bg-color: rgba(255, 255, 255, 0.2);
+  --header-lang-color: rgba(0, 0, 0, 0.2);
+  /* --header-bg-color: rgba(0, 0, 0, 0.2); */
 
   .logo {
     .white {
@@ -549,9 +562,12 @@ header.invert {
     .text-box {
       position: absolute;
       z-index: 2;
-      top: 50%;
-      left: 4.8rem;
-      transform: translateY(-50%);
+      inset: 0 0 0 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4.8rem;
+      word-break: keep-all;
 
       h3 {
         font-size: 3.2rem;
@@ -715,10 +731,11 @@ header.invert {
 
 .sec-4 .left .img-box {
   height: 30rem;
+  border-radius: 0 1rem 1rem 0;
 
   img {
+    scale: 1.5;
     filter: brightness(0.8);
-    border-radius: 0 0 10px 0;
   }
 }
 
@@ -937,7 +954,8 @@ header.invert {
     }
 
     dt {
-      font-size: var(--Heading-L);
+      word-break: keep-all;
+      font-size: var(--Heading-M);
       font-weight: var(--Heading);
       color: var(--primary-dim);
       max-height: 11rem;
@@ -1003,8 +1021,8 @@ header.invert {
     &:hover {
       a > .img-box {
         > img {
-          transform: scale(1.05);
           filter: blur(0);
+          scale: 1.05;
         }
 
         &::after {
@@ -1039,6 +1057,7 @@ header.invert {
     img {
       filter: blur(2px);
       transition: inherit;
+      height: 100%;
     }
 
     &::after {
@@ -1059,35 +1078,37 @@ footer {
   padding: 8rem 0;
 
   > .content-wrap {
-    display: flex;
     width: 100%;
     max-width: 160rem;
     margin: 0 auto;
+
+    > .footer-con {
+      display: flex;
+    }
   }
 }
 
 footer .left {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
 
   flex: 1 1 0;
 
   .top {
     display: flex;
-    width: 70%;
-    align-items: center;
+    align-items: end;
+    gap: 3.6rem;
 
     .img-box {
       width: 15rem;
     }
 
     .info {
-      margin-left: auto;
       font-size: var(--Body-S);
       font-weight: var(--Body-Strong);
       display: flex;
-      gap: 1.2rem;
+      gap: 2.4rem;
 
       a {
         position: relative;
@@ -1113,13 +1134,6 @@ footer .left {
       }
     }
   }
-
-  .bottom {
-    margin-top: 1.2rem;
-    font-weight: var(--Body-Default);
-    font-size: var(--Body-S);
-    color: var(--Gray);
-  }
 }
 
 footer .right {
@@ -1127,7 +1141,8 @@ footer .right {
 
   .head {
     font-weight: var(--Heading);
-    font-size: var(--Heading-M);
+    font-size: var(--Heading-S);
+    color: var(--White);
   }
 
   .body {
@@ -1139,6 +1154,7 @@ footer .right {
     flex: 1 1 0;
     font-weight: var(--Body-Default);
     font-size: var(--Body-S);
+    line-height: 1.8;
 
     .name {
       font-weight: var(--Body-Strong);
@@ -1146,6 +1162,14 @@ footer .right {
       margin-bottom: 0.8rem;
     }
   }
+}
+
+footer .bottom {
+  text-align: center;
+  margin-top: 5rem;
+  font-weight: var(--Body-Default);
+  font-size: var(--Body-S);
+  color: var(--Gray);
 }
 
 /* ----------------------------- tool tip ----------------------------- */
