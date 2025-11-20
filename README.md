@@ -1,6 +1,6 @@
 # YoungPoongPrecision_redesign
 
-[영풍정밀](http://www.yppkorea.com/){:target="\_blank"} 리디자인 사이트입니다
+<a href="http://www.yppkorea.com/" target="_blank">영풍정밀(주)</a>를 리디자인 하였습니다.
 
 HTML
 
