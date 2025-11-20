@@ -291,12 +291,12 @@ function headerST() {
 
 function animation__init() {
   const target = document.querySelectorAll("[data-ani]");
-  let defalutDuration = 0.6;
+  let defaultDuration = 0.6;
 
   target.forEach((el) => {
     let aniType = el.getAttribute("data-ani");
     let delay = el.getAttribute("data-delay") == null ? 0 : el.getAttribute("data-delay");
-    let duration = el.getAttribute("data-duration") == null ? defalutDuration : el.getAttribute("data-duration");
+    let duration = el.getAttribute("data-duration") == null ? defaultDuration : el.getAttribute("data-duration");
     console.log(duration);
 
     if (aniType == "up") {
@@ -311,7 +311,7 @@ function animation__init() {
   function aniUp(El, de, du) {
     gsap.set(El, { opacity: 0 });
     let tl = gsap.timeline();
-    tl.to(El, { y: "50%", opacity: 0, duration: 0, ease: "none" });
+    tl.to(El, { y: "50%", opacity: 0, duration: 0.01, ease: "none" });
     tl.to(El, { y: 0, opacity: 1, duration: du, ease: "power2.out", delay: de });
     let st = ScrollTrigger.create({
       trigger: El,
@@ -323,7 +323,7 @@ function animation__init() {
   function aniRight(El, de, du) {
     gsap.set(El, { opacity: 0 });
     let tl = gsap.timeline();
-    tl.to(El, { x: "-50%", opacity: 0, duration: 0, ease: "none" });
+    tl.to(El, { x: "-50%", opacity: 0, duration: 0.01, ease: "none" });
     tl.to(El, { x: 0, opacity: 1, duration: du, ease: "power2.out", delay: de });
 
     let st = ScrollTrigger.create({
