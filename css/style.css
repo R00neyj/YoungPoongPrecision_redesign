@@ -1075,7 +1075,7 @@ header.invert {
 footer {
   background-color: var(--Black);
   color: var(--White_Dimmed);
-  padding: 8rem 0;
+  padding: 14rem 0 1rem;
 
   > .content-wrap {
     width: 100%;
@@ -1160,6 +1160,10 @@ footer .right {
       font-weight: var(--Body-Strong);
       font-size: var(--Body-M);
       margin-bottom: 0.8rem;
+    }
+
+    li:not(:first-of-type) {
+      color: var(--Gray);
     }
   }
 }

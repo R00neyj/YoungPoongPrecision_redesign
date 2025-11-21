@@ -256,7 +256,7 @@ function sec_3_gsap__init() {
       animation: tl,
       pin: true,
       start: "top top",
-      end: "+=200%",
+      end: "+=150%",
       scrub: duration,
 
       // toggleActions: "play none none reset",
