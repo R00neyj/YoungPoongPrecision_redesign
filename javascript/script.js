@@ -118,18 +118,18 @@ function swiper__init() {
 }
 
 function sec_1_gsap__init() {
-  if (isMobile) {
-    return false;
-  }
   const sec_1 = document.querySelector(".sec-1");
   const sec_1_pin = sec_1.querySelector(".container");
   const imgContainerWrap = sec_1.querySelector(".img-container .inner");
   const textBox = sec_1.querySelectorAll(".text-box");
   const imgBox = imgContainerWrap.querySelectorAll(".img-box");
   const lastImgBox = imgBox[5];
-
-  horizontalScroll();
-  changeText();
+  if (isMobile) {
+    ifMobile();
+  } else {
+    horizontalScroll();
+    changeText();
+  }
 
   function horizontalScroll() {
     const totalScrollDistance = imgContainerWrap.offsetWidth - window.innerWidth;
@@ -188,6 +188,46 @@ function sec_1_gsap__init() {
       end: "+=700%",
       animation: tlText,
       scrub: 1,
+    });
+  }
+
+  function ifMobile() {
+    const sec_1MC = document.querySelector(".sec-1-m > .container");
+    const textBox = sec_1MC.querySelectorAll(".text-box");
+    const imgContainer = sec_1MC.querySelector(".sec-1-m .img-container");
+    const lastImg = sec_1MC.querySelector(".sec-1-m .img-container .img-box:nth-child(6) > img");
+
+    let tl = gsap.timeline({ defaults: { ease: "none" } });
+    tl.to(textBox[0], { opacity: 1 });
+    tl.to(textBox[0], { opacity: 0 }, 2);
+    tl.to(textBox[1], { opacity: 1 }, "<");
+    tl.to(textBox[1], { opacity: 0 }, 4);
+    tl.to(textBox[2], { opacity: 1 }, "<");
+    tl.to({}, { duration: 0.1 }, 5);
+
+    let tl2 = gsap.timeline({ defaults: { ease: "none" } });
+    gsap.set(imgContainer, { y: "0%" });
+    tl2.to(imgContainer, {
+      y: () => {
+        return -(imgContainer.offsetHeight - window.innerHeight);
+      },
+      duration: tl.duration(),
+    });
+    tl2.fromTo(sec_1MC, { backgroundColor: "#1d4a84" }, { backgroundColor: "#09182b", duration: tl.duration() }, 0);
+
+    let master = gsap.timeline();
+    master.add(tl);
+    master.add(tl2, 0);
+
+    let st = ScrollTrigger.create({
+      trigger: sec_1MC,
+      pin: true,
+      animation: master,
+      scrub: 0,
+      start: "top top",
+      end: () => {
+        return imgContainer.offsetHeight * 1.5;
+      },
     });
   }
 }
@@ -457,3 +497,14 @@ const checkMobile = () => {
     isMobile = false;
   }
 };
+
+const mNavBtn = document.querySelector(".m-nav-btn");
+const mNav = document.querySelector(".m-sidebar");
+const closeBtn = mNav.querySelector(".m-sidebar .close");
+
+mNavBtn.addEventListener("click", () => {
+  mNav.classList.add("active");
+});
+closeBtn.addEventListener("click", () => {
+  mNav.classList.remove("active");
+});
