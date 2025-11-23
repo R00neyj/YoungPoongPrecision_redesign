@@ -817,6 +817,7 @@ header.invert {
 /* ----------------------------- sec-3 ----------------------------- */
 .sec-3 {
   background-color: var(--Secondary_On);
+  overflow-x: hidden;
 }
 .sec-3 .head {
   position: relative;

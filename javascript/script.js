@@ -2,6 +2,9 @@ gsap.registerPlugin(ScrollSmoother, ScrollTrigger, DrawSVGPlugin, MotionPathPlug
 
 let skewSetter = gsap.quickTo(".skew", "skewX"), // fast
   clamp = gsap.utils.clamp(-4, 4); // don't let the skew go beyond 20 degrees.
+let currentWidth = window.innerWidth;
+let isMobile = false;
+let resizeTimer;
 
 gsap.matchMedia().add("(min-width: 800px)", () => {
   smoother = ScrollSmoother.create({
@@ -444,8 +447,14 @@ function animation__init() {
     });
   }
 }
-let currentWidth = window.innerWidth;
-let isMobile = false;
+
+const checkMobile = () => {
+  if (currentWidth < 800) {
+    return (isMobile = true);
+  } else {
+    return (isMobile = false);
+  }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   checkMobile();
@@ -458,19 +467,27 @@ document.addEventListener("DOMContentLoaded", () => {
   animation__init();
 
   const allLinks = document.querySelectorAll("a");
-
   allLinks.forEach((el) => {
     el.setAttribute("href", "javascript:void(0)");
   });
+  const mNavBtn = document.querySelector(".m-nav-btn");
+  const mNav = document.querySelector(".m-sidebar");
+  const closeBtn = mNav.querySelector(".m-sidebar .close");
+
+  mNavBtn.addEventListener("click", () => {
+    mNav.classList.add("active");
+  });
+  closeBtn.addEventListener("click", () => {
+    mNav.classList.remove("active");
+  });
 });
 
-let resizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
 
   resizeTimer = setTimeout(() => {
     if (currentWidth == window.innerWidth) {
-      return false;
+      return;
     } else {
       currentWidth = window.innerWidth;
     }
@@ -489,22 +506,4 @@ window.addEventListener("resize", () => {
     headerST();
     animation__init();
   };
-});
-const checkMobile = () => {
-  if (currentWidth < 800) {
-    isMobile = true;
-  } else {
-    isMobile = false;
-  }
-};
-
-const mNavBtn = document.querySelector(".m-nav-btn");
-const mNav = document.querySelector(".m-sidebar");
-const closeBtn = mNav.querySelector(".m-sidebar .close");
-
-mNavBtn.addEventListener("click", () => {
-  mNav.classList.add("active");
-});
-closeBtn.addEventListener("click", () => {
-  mNav.classList.remove("active");
 });
