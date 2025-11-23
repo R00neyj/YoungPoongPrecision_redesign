@@ -3,15 +3,23 @@ gsap.registerPlugin(ScrollSmoother, ScrollTrigger, DrawSVGPlugin, MotionPathPlug
 let skewSetter = gsap.quickTo(".skew", "skewX"), // fast
   clamp = gsap.utils.clamp(-4, 4); // don't let the skew go beyond 20 degrees.
 
-ScrollSmoother.create({
-  smooth: 1.5,
-  speed: 1.5,
-  effects: true,
-  onUpdate: (self) => skewSetter(clamp(self.getVelocity() / -50)),
-  onStop: () => skewSetter(0),
+gsap.matchMedia().add("(min-width: 800px)", () => {
+  smoother = ScrollSmoother.create({
+    smooth: 1.5,
+    speed: 1.5,
+    effects: true,
+    onUpdate: (self) => skewSetter(clamp(self.getVelocity() / -50)),
+    onStop: () => skewSetter(0),
+  });
+
+  return () => {
+    if (smoother) smoother.kill();
+  };
 });
 
 function tooltip() {
+  if (isMobile) {
+  }
   const toolTipBox = document.querySelector(".tooltip-box");
   const toolTipText = toolTipBox.querySelector(".tipText");
   const hoverEl = document.querySelectorAll(`[data-hover="true"]`);
@@ -27,6 +35,9 @@ function tooltip() {
     let timer;
 
     el.addEventListener("mouseenter", (e) => {
+      if (isMobile) {
+        return false;
+      }
       text = el.getAttribute("data-hover-text");
       toolTipText.textContent = text;
 
@@ -37,6 +48,9 @@ function tooltip() {
       }, 400);
     });
     el.addEventListener("mouseleave", (e) => {
+      if (isMobile) {
+        return false;
+      }
       clearTimeout(timer);
       toolTipBox.classList.remove("active");
     });
@@ -44,6 +58,7 @@ function tooltip() {
 }
 
 function swiper__init() {
+  // hero
   let heroSection = new Swiper(".hero-swiper", {
     loop: true,
     parallax: true,
@@ -72,21 +87,40 @@ function swiper__init() {
     },
   });
 
+  // sec4 product
   let sec4Swiper = new Swiper(".sec-4 .swiper", {
-    slidesPerView: 1.6,
+    slidesPerView: 1,
     spaceBetween: 30,
+
+    breakpoints: {
+      800: {
+        slidesPerView: 1.6,
+      },
+    },
   });
 
+  // sec5 news
   const sec5SwiperEl = document.querySelector(".sec-5 .swiper");
   const length = sec5SwiperEl.querySelectorAll(".swiper-slide").length;
 
   let sec5Swiper = new Swiper(sec5SwiperEl, {
-    slidesPerView: length,
+    slidesPerView: 1,
     spaceBetween: 40,
+    centerdSlides: true,
+
+    breakpoints: {
+      800: {
+        slidesPerView: length,
+        // centerdSlides: false,
+      },
+    },
   });
 }
 
 function sec_1_gsap__init() {
+  if (isMobile) {
+    return false;
+  }
   const sec_1 = document.querySelector(".sec-1");
   const sec_1_pin = sec_1.querySelector(".container");
   const imgContainerWrap = sec_1.querySelector(".img-container .inner");
@@ -123,6 +157,7 @@ function sec_1_gsap__init() {
       duration: 1,
       ease: "none",
     });
+    tl.to(lastImgBox.querySelector("img"), { height: "100dvh", duration: 1 }, "<10%");
     tl.to({}, { duration: 0.1 });
 
     let st = ScrollTrigger.create({
@@ -159,11 +194,20 @@ function sec_1_gsap__init() {
 
 function sec_2_gsap__init() {
   const cards = document.querySelectorAll(".sec-2 .card");
+  let fontLarge = "max(32px,2.5vw)",
+    fontMedium = "max(24px,1.667vw)",
+    fontSmall = "max(14px,1.042vw)";
 
   cards.forEach((card, index) => {
     const target = card.querySelector("a");
     const h3 = target.querySelector("h3");
     const p = target.querySelector("p");
+
+    const getCardsWidth = () => {
+      let innerWidth = window.innerWidth;
+
+      return { activeWidth: isMobile ? innerWidth * 0.9 : "69.2708vw", defaultWidth: isMobile ? innerWidth * 0.6 : "41.6667vw" };
+    };
 
     let prevTarget = null,
       pervH3 = null,
@@ -174,14 +218,39 @@ function sec_2_gsap__init() {
       prevP = prevTarget.querySelector("p");
     }
 
+    gsap.set(target, {
+      width: () => {
+        return getCardsWidth().defaultWidth;
+      },
+      height: "50%",
+    });
+
     let tl = gsap.timeline();
     tl.add("start");
-    tl.to(target, { width: "133rem", height: "100%", duration: 1 });
-    tl.to(prevTarget, { width: "80rem", height: "50%", duration: 1 }, "<10%");
-    tl.to(pervH3, { fontSize: "3.2rem" }, "<");
-    tl.to(prevP, { fontSize: "2rem" }, "<");
-    tl.to(h3, { fontSize: "4.8rem" }, "start");
-    tl.to(p, { fontSize: "3.2rem" }, "start");
+    tl.to(target, {
+      width: () => {
+        return getCardsWidth().activeWidth;
+      },
+      height: "100%",
+      duration: 1,
+    });
+    if (prevTarget !== null) {
+      tl.to(
+        prevTarget,
+        {
+          width: () => {
+            return getCardsWidth().defaultWidth;
+          },
+          height: "50%",
+          duration: 1,
+        },
+        "<10%"
+      );
+      tl.to(pervH3, { fontSize: fontMedium }, "<");
+      tl.to(prevP, { fontSize: fontSmall }, "<");
+    }
+    tl.to(h3, { fontSize: fontLarge }, "start");
+    tl.to(p, { fontSize: fontMedium }, "start");
 
     let st = ScrollTrigger.create({
       trigger: card,
@@ -190,6 +259,8 @@ function sec_2_gsap__init() {
       animation: tl,
       scrub: 1,
     });
+
+    st.refresh();
   });
 }
 function sec_3_gsap__init() {
@@ -297,7 +368,6 @@ function animation__init() {
     let aniType = el.getAttribute("data-ani");
     let delay = el.getAttribute("data-delay") == null ? 0 : el.getAttribute("data-delay");
     let duration = el.getAttribute("data-duration") == null ? defaultDuration : el.getAttribute("data-duration");
-    console.log(duration);
 
     if (aniType == "up") {
       aniUp(el, delay, duration);
@@ -334,8 +404,11 @@ function animation__init() {
     });
   }
 }
+let currentWidth = window.innerWidth;
+let isMobile = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+  checkMobile();
   swiper__init();
   tooltip();
   sec_1_gsap__init();
@@ -350,3 +423,37 @@ document.addEventListener("DOMContentLoaded", () => {
     el.setAttribute("href", "javascript:void(0)");
   });
 });
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+
+  resizeTimer = setTimeout(() => {
+    if (currentWidth == window.innerWidth) {
+      return false;
+    } else {
+      currentWidth = window.innerWidth;
+    }
+    checkMobile();
+    resizeReload();
+  }, 300);
+
+  const resizeReload = () => {
+    ScrollTrigger.getAll().forEach((s) => {
+      s.kill(true);
+    });
+
+    sec_1_gsap__init();
+    sec_2_gsap__init();
+    sec_3_gsap__init();
+    headerST();
+    animation__init();
+  };
+});
+const checkMobile = () => {
+  if (currentWidth < 800) {
+    isMobile = true;
+  } else {
+    isMobile = false;
+  }
+};

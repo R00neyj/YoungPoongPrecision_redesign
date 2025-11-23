@@ -73,15 +73,18 @@ a {
 }
 
 html {
-  font-size: 0.52083333vw;
+  font-size: clamp(9.9px, 0.52083333vw, 20px);
 }
 
 /* libs */
 .img-box,
 .svg-box,
 .ico-box {
+  width: 100%;
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 0;
   overflow: hidden;
 
@@ -246,6 +249,7 @@ header > .inner > .menu-box {
     padding: 2.4rem 3.2rem;
 
     .ico-box {
+      width: auto;
       cursor: pointer;
       padding: 0.8rem 1.6rem;
       border-radius: 9.9rem;
@@ -328,6 +332,10 @@ header.invert {
 
   color: var(--White);
 
+  @media (max-width: 800px) {
+    left: 8.333vw;
+  }
+
   h3 {
     font-size: var(--Title-XL);
     font-weight: var(--Title);
@@ -358,6 +366,10 @@ header.invert {
 }
 
 .hero-swiper .swiper-btns {
+  @media (max-width: 800px) {
+    display: none;
+  }
+
   > div {
     position: absolute;
     z-index: 1;
@@ -483,6 +495,11 @@ header.invert {
     top: 0%;
     right: calc(100vw - 52rem);
     align-items: center;
+
+    img {
+      width: 100%;
+      height: 28rem;
+    }
   }
 }
 
@@ -516,7 +533,7 @@ header.invert {
 }
 
 .sec-2 .head {
-  padding: 22.4rem;
+  padding: 22.4rem 2.4rem;
   text-align: center;
 
   h2 {
@@ -566,8 +583,12 @@ header.invert {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 4.8rem;
+      padding: 2.5vw;
       word-break: keep-all;
+
+      @media (max-width: 800px) {
+        text-align: center;
+      }
 
       h3 {
         font-size: 3.2rem;
@@ -580,6 +601,11 @@ header.invert {
       }
     }
     .img-box {
+      overflow: visible;
+
+      @media (max-width: 800px) {
+        height: 100%;
+      }
       img {
         height: 100%;
       }
@@ -610,11 +636,13 @@ header.invert {
 .sec-3 .head .text-box {
   position: absolute;
   top: 50%;
-  left: 0%;
-  width: 100%;
+  left: 0;
+  right: 0;
   transform: translate(0, -50%);
   text-align: center;
   line-height: 1.3;
+  padding: 0 2.4rem;
+
   h2 {
     font-weight: var(--Title);
     font-size: var(--Title-L);
@@ -636,10 +664,11 @@ header.invert {
   }
 }
 .sec-3 .head .svg-box {
+  min-width: 133rem;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-48%, -41%);
+  transform: translate(-49%, -40%);
 }
 
 .sec-3 .body {
@@ -658,7 +687,7 @@ header.invert {
 .sec-3 .card {
   position: relative;
   flex-shrink: 0;
-  width: 160rem;
+  width: 83.3333vw;
   height: 80rem;
   color: var(--White);
   border-radius: 0.8rem;
@@ -667,9 +696,15 @@ header.invert {
 
   .text-box {
     position: absolute;
-    top: 50%;
-    left: 9.6rem;
-    transform: translate(0, -50%);
+    inset: 0 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5vw;
+
+    @media (max-width: 800px) {
+      text-align: center;
+    }
 
     h3 {
       font-weight: var(--Heading);
@@ -694,6 +729,7 @@ header.invert {
 
   .img-box {
     filter: brightness(0.6);
+    height: 100%;
     img {
       height: 100%;
     }
@@ -721,17 +757,29 @@ header.invert {
   .inner {
     display: flex;
     padding: 15rem 0;
+
+    @media (max-width: 1600px) {
+      flex-direction: column;
+    }
   }
 }
 
 .sec-4 .left {
   width: 77rem;
   flex: auto 0 0;
+  @media (max-width: 1600px) {
+    width: 100%;
+  }
 }
 
 .sec-4 .left .img-box {
   height: 30rem;
   border-radius: 0 1rem 1rem 0;
+  @media (max-width: 1600px) {
+    width: auto;
+    margin: 2.4rem;
+    border-radius: 1rem;
+  }
 
   img {
     scale: 1.5;
@@ -742,6 +790,9 @@ header.invert {
 .sec-4 .left .text-box {
   padding-left: 16rem;
   margin-top: 5.6rem;
+  @media (max-width: 1600px) {
+    padding: 2.4rem;
+  }
 
   h2 {
     font-weight: var(--Title);
@@ -781,6 +832,10 @@ header.invert {
     height: 102%;
     background: linear-gradient(90deg, var(--Tertiary_Dim) 33%, transparent);
     pointer-events: none;
+
+    @media (max-width: 1600px) {
+      display: none;
+    }
   }
 }
 
@@ -788,6 +843,10 @@ header.invert {
   height: 64rem;
   margin: 0 5rem 5rem 10rem;
   overflow: visible;
+  @media (max-width: 1600px) {
+    height: 50rem;
+    margin: 1.2rem 3rem 5rem 1.2rem;
+  }
 }
 
 .sec-4 .right .swiper-slide {
@@ -837,22 +896,26 @@ header.invert {
     position: relative;
     height: 100%;
     width: 100%;
-    transform: scale(0.7);
     transition: opacity 0.4s;
+
+    @media (max-width: 800px) {
+    }
 
     img {
       transition: inherit;
     }
     img:nth-child(1) {
+      height: 35rem;
       opacity: 0;
     }
 
     .hover {
+      /* display: none; */
       position: absolute;
       top: 50%;
       left: 50%;
       width: 42rem;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(0.55);
     }
   }
 
@@ -882,8 +945,11 @@ header.invert {
   background-color: var(--White);
   padding: 20rem 0;
 }
-
 .sec-5 .head {
+  @media (max-width: 800px) {
+    padding: 0 2.4rem;
+  }
+
   h2 {
     font-weight: var(--Title);
     font-size: var(--Title-L);
@@ -906,12 +972,18 @@ header.invert {
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  margin-top: 10rem;
+  margin-top: 5rem;
 }
 .sec-5 .news .swiper-container {
   overflow: hidden;
   margin-left: -0.8rem;
   padding: 0.8rem 3rem 4rem 0.8rem;
+
+  @media (max-width: 800px) {
+    padding: 2rem 2rem 5rem 2rem;
+    margin: 0 auto;
+    width: calc(100vw - 5rem);
+  }
 }
 .sec-5 .news .swiper {
   width: 100%;
@@ -984,6 +1056,10 @@ header.invert {
 .sec-5 .cont-2 {
   padding-right: 3rem;
   height: 55rem;
+  @media (max-width: 800px) {
+    display: none;
+  }
+
   .inner {
     display: flex;
     height: 100%;
@@ -999,6 +1075,9 @@ header.invert {
   margin-top: 10rem;
   height: 30rem;
   padding: 0 3rem 0 0;
+  @media (max-width: 800px) {
+    padding: 0 12px;
+  }
 
   > .btn-wrap {
     display: flex;
@@ -1007,7 +1086,7 @@ header.invert {
   }
 
   .btn {
-    flex-grow: 1;
+    flex: 1 1 0;
     overflow: hidden;
     border-radius: 0.8rem;
 
@@ -1039,14 +1118,22 @@ header.invert {
     padding: 2.4rem;
     color: var(--White);
 
+    @media (max-width: 800px) {
+      text-align: center;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
     dt {
       font-weight: 700;
-      font-size: 4rem;
+      font-size: var(--Title-S);
       letter-spacing: 0;
     }
     dd {
       font-weight: 500;
-      font-size: 2rem;
+      font-size: var(--Body-L);
     }
   }
 
@@ -1075,7 +1162,7 @@ header.invert {
 footer {
   background-color: var(--Black);
   color: var(--White_Dimmed);
-  padding: 14rem 0 1rem;
+  padding: 14rem 1.2rem 1rem;
 
   > .content-wrap {
     width: 100%;
@@ -1084,6 +1171,11 @@ footer {
 
     > .footer-con {
       display: flex;
+
+      @media (max-width: 800px) {
+        flex-direction: column;
+        gap: 5rem;
+      }
     }
   }
 }
@@ -1100,8 +1192,14 @@ footer .left {
     align-items: end;
     gap: 3.6rem;
 
+    @media (max-width: 320px) {
+      flex-direction: column;
+      align-items: start;
+    }
+
     .img-box {
       width: 15rem;
+      min-width: 15rem;
     }
 
     .info {
@@ -1148,6 +1246,11 @@ footer .right {
   .body {
     display: flex;
     margin-top: 2rem;
+
+    @media (max-width: 320px) {
+      flex-direction: column;
+      gap: 3rem;
+    }
   }
 
   .add {
@@ -1198,4 +1301,31 @@ footer .bottom {
 .tooltip-box.active {
   opacity: 1;
   visibility: visible;
+}
+
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 800px) {
+  :root {
+    --Title-XL: 4rem;
+    --Title-L: 3.2rem;
+    --Title-M: 2.8rem;
+    --Title-S: 2.4rem;
+    --Subtitle-L: 2.2rem;
+    --Subtitle-M: 2rem;
+    --Subtitle-S: 1.8rem;
+    --Heading-L: 2.4rem;
+    --Heading-M: 2rem;
+    --Heading-S: 1.8rem;
+    --Body-L: 1.8rem;
+    --Body-M: 1.6rem;
+    --Body-S: 1.4rem;
+  }
+  br {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
 }
