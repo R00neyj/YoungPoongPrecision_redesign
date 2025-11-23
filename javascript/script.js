@@ -163,7 +163,7 @@ function sec_1_gsap__init() {
     let st = ScrollTrigger.create({
       trigger: sec_1_pin,
       pin: true,
-      scrub: 1,
+      scrub: 0,
       animation: tl,
       start: "top top",
       end: "+=700%",
@@ -187,7 +187,7 @@ function sec_1_gsap__init() {
       start: "top top",
       end: "+=700%",
       animation: tlText,
-      scrub: 1,
+      scrub: 0,
     });
   }
 
