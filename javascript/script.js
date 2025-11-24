@@ -228,9 +228,7 @@ function sec_1_gsap__init() {
       animation: master,
       scrub: 0,
       start: "top top",
-      end: () => {
-        return imgContainer.offsetHeight * 1.5;
-      },
+      end: "+=300%",
     });
   }
 }
