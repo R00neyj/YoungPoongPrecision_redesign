@@ -309,6 +309,7 @@ header > .inner > .menu-box {
     background-color: var(--primary-dim);
     padding: 2.4rem;
     box-sizing: border-box;
+    overflow: hidden;
 
     .head {
       display: flex;
@@ -873,7 +874,13 @@ header.invert {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-53%, -43%);
+  transform: translate(-52%, -38%);
+
+  @media (max-width: 800px) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-53%, -43%);
+  }
 }
 
 .sec-3 .body {
