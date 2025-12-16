@@ -100,6 +100,10 @@ html {
   margin: 0 auto;
 }
 
+.pin-spacer > div {
+  will-change: transform;
+}
+
 /* ----------------------------- component ----------------------------- */
 /* button */
 button {
